@@ -16,7 +16,30 @@ class RepoListNotifier extends StateNotifier<AsyncValue<List<Repository>>> {
   // To keep track of current page
   int _currentPage = 1;
 
+  bool _isLoading = false;
+  bool _isLoadingMore = false;
+
+  bool get isLoadingMore => _isLoadingMore;
+
+  void resetPagination() {
+    _currentPage = 1;
+  }
+
   Future<void> fetchRepos({bool isRetry = false}) async {
+
+    if (_isLoading) return;
+    _isLoading = true;
+
+    // If user encountered any error during loading github repo
+    // We want to allow user to click a button, and retry again
+    // This is a mechanism to refresh the UI 
+    if (isRetry) {
+      state = const AsyncValue.loading();
+    } else if (_currentPage > 1) {
+      _isLoadingMore = true;
+      state = AsyncValue.data([...state.value ?? []]);
+    }
+
     try {
       final repos =
           await ref.read(githubApiServiceProvider).fetchRepos(_currentPage);
@@ -24,6 +47,9 @@ class RepoListNotifier extends StateNotifier<AsyncValue<List<Repository>>> {
       _currentPage++;
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+    } finally {
+      _isLoading = false;
+      _isLoadingMore = false;
     }
   }
 }

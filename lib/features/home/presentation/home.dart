@@ -17,36 +17,64 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Future.microtask(() => ref.read(repoListProvider.notifier).fetchRepos());
   }
 
+  Future<void> _refresh() async {
+    // Reset pagination and fetch new data
+    final notifier = ref.read(repoListProvider.notifier);
+    notifier.resetPagination();
+    await notifier.fetchRepos(isRetry: true);
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final repoListState = ref.watch(repoListProvider);
+    final notifier = ref.read(repoListProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trending Repos'),
       ),
-      body: repoListState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        data: (repoList) => NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
-              ref.read(repoListProvider.notifier).fetchRepos();
-            }
-            return false;
-          },
-          child: ListView.separated(
-            separatorBuilder: (c,i){
-              return const Divider(thickness: 0.5,);
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: repoListState.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          data: (repoList) => NotificationListener<ScrollNotification>(
+            onNotification: (scrollInfo) {
+              if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !notifier.isLoadingMore) {
+                notifier.fetchRepos();
+              }
+              return false;
             },
-            itemCount: repoList.length,
-            itemBuilder: (context, index) {
-              final repo = repoList[index];
-              return RepoTilesItem(repo: repo);
-            },
+            child: ListView.builder(
+              itemCount: repoList.length + (notifier.isLoadingMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == repoList.length) {
+                  return const Padding(
+                    padding:  EdgeInsets.only(bottom: 16.0),
+                    child:  Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final repo = repoList[index];
+                return RepoTilesItem(repo: repo);
+              },
+            ),
+          ),
+          error: (err, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: $err'),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    notifier.fetchRepos(isRetry: true);
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
-        error: (err, stack) => Center(child: Text('Error: $err')),
-      ),
-    );
+      ));
   }
 }

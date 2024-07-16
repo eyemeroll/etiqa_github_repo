@@ -9,6 +9,9 @@ class GithubApiService {
     final response = await http.get(Uri.parse('https://api.github.com/search/repositories?q=created:>$date&sort=stars&order=desc&page=$page'));
 
     if (response.statusCode == 200) {
+      // Comment this. Just to test error
+      // throw Exception('Error loading data');
+      
       final data = json.decode(response.body);
       final List<Repository> repos = (data['items'] as List)
           .map((item) => Repository.fromJson(item))

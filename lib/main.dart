@@ -20,6 +20,7 @@ class _MyAppState extends ConsumerState<MyApp> {
    Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GitHub Repos',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.yellow,
       ),
