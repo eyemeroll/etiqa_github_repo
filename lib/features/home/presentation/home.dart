@@ -1,4 +1,5 @@
 import 'package:etiqa_github_repo/features/home/data/provider/repo_list_provider.dart';
+import 'package:etiqa_github_repo/features/home/presentation/widget/repo_tiles_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +22,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final repoListState = ref.watch(repoListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GitHub Repos'),
+        title: const Text('Trending Repos'),
       ),
       body: repoListState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -33,16 +34,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             }
             return false;
           },
-          child: ListView.builder(
+          child: ListView.separated(
+            separatorBuilder: (c,i){
+              return const Divider(thickness: 0.5,);
+            },
             itemCount: repoList.length,
             itemBuilder: (context, index) {
               final repo = repoList[index];
-              return ListTile(
-                leading: Image.network(repo.ownerAvatarUrl),
-                title: Text(repo.name),
-                subtitle: Text(repo.description),
-                trailing: Text('${repo.stars} ★'),
-              );
+              return RepoTilesItem(repo: repo);
             },
           ),
         ),
