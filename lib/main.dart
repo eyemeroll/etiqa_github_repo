@@ -1,8 +1,10 @@
+import 'package:etiqa_github_repo/features/home/presentation/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+   runApp(const ProviderScope(child: MyApp()));
+
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -15,7 +17,13 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Scaffold(body: Center(child: Text('GitHub Repo')),));
+   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'GitHub Repos',
+      theme: ThemeData(
+        primarySwatch: Colors.yellow,
+      ),
+      home: const HomeScreen(),
+    );
   }
 }
