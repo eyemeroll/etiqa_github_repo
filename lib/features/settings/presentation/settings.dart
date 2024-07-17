@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SettingsScreen extends ConsumerStatefulWidget {
-  const SettingsScreen({super.key});
+class SettingsWidget extends ConsumerStatefulWidget {
+  const SettingsWidget({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsWidgetState();
 }
 
-class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+class _SettingsWidgetState extends ConsumerState<SettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Settings Screen'),),);
+    return const Scaffold(body: Center(child: Text('Settings'),),);
   }
 }
