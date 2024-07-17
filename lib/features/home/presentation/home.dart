@@ -1,5 +1,4 @@
-import 'package:etiqa_github_repo/features/home/data/provider/repo_list_provider.dart';
-import 'package:etiqa_github_repo/features/home/presentation/widget/repo_tiles_item.dart';
+
 import 'package:etiqa_github_repo/features/home/presentation/widget/repo_widget.dart';
 import 'package:etiqa_github_repo/features/settings/presentation/settings.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   int currentIndex = 0;
 
-
   var screens =  const [ RepoWidget(), SettingsWidget()];
-
-
 
   @override
   Widget build(BuildContext context) {
