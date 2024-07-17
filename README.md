@@ -1,16 +1,11 @@
-# etiqa_github_repo
+# Starred Github Repo
 
-A new Flutter project.
+<p>Simple mobile app using Flutter that list the most starred Github repos created in the last 10 days. </p>
 
-## Getting Started
+<img src="https://github.com/eyemeroll/etiqa_github_repo/blob/master/screenshot/home_screen.png" alt="Home Screen" width="258" height="559"/>
 
-This project is a starting point for a Flutter application.
+<p>State Management: Riverpod</p>
+<p>Api Source: api.github.com</p>
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<b>How it works</b>
+<p>If today is 17 July 2024, it will fetch all starred repo that started after 7 July (10 days before)</p>
