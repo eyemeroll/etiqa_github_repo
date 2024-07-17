@@ -45,18 +45,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
               return false;
             },
-            child: ListView.builder(
-              itemCount: repoList.length + (notifier.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == repoList.length) {
-                  return const Padding(
-                    padding:  EdgeInsets.only(bottom: 16.0),
-                    child:  Center(child: CircularProgressIndicator()),
-                  );
-                }
-                final repo = repoList[index];
-                return RepoTilesItem(repo: repo);
-              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ListView.separated(
+                separatorBuilder: (c,i){
+                  return const Divider(thickness: 0.5,);
+                },
+                itemCount: repoList.length + (notifier.isLoadingMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == repoList.length) {
+                    return const Padding(
+                      padding:  EdgeInsets.only(bottom: 16.0),
+                      child:  Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  final repo = repoList[index];
+                  return RepoTilesItem(repo: repo);
+                },
+              ),
             ),
           ),
           error: (err, stack) => Center(
@@ -75,6 +81,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
         ),
-      ));
+      ),
+      bottomNavigationBar: BottomNavigationBar(items: [BottomNavigationBarItem(
+        label: 'Home',
+        icon: Icon(Icons.home)),
+        BottomNavigationBarItem(
+          label: 'Settings',
+          icon: Icon(Icons.settings))],),
+      );
   }
 }
